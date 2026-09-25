@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<title>Material Selector — Quản lý user</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<style>
+  :root{--navy:#12253b;--ink2:#667;--line:#d7dee7;--bg:#f4f6f9}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--navy)}
+  header{display:flex;align-items:center;gap:14px;padding:12px 20px;background:var(--navy);color:#fff}
+  header .logo{font-weight:700;letter-spacing:.03em}
+  header .spacer{flex:1}
+  header a{color:#fff;text-decoration:none;font-size:13px;opacity:.9}
+  header a:hover{opacity:1;text-decoration:underline}
+  .wrap{max-width:760px;margin:28px auto;padding:0 16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:20px}
+  .card h2{margin:0 0 14px;font-size:16px;color:var(--navy)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--ink2);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700}
+  .role-admin{background:#fde8d0;color:#a25b0a}
+  .role-guest{background:#dbe7f5;color:#1c4d82}
+  .btn{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
+  .btn-del{background:#fbe1de;color:#b3392c}
+  .btn-del:hover{background:#f6c9c4}
+  form.addform{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+  form.addform label{display:block;font-size:12px;color:#445;margin-bottom:4px}
+  form.addform input,form.addform select{padding:7px 9px;border:1px solid var(--line);border-radius:6px;font-size:13px}
+  .btn-primary{background:#2f6fb0;color:#fff;padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn-primary:hover{background:#255a8f}
+  .hint{font-size:12px;color:var(--ink2);margin-top:8px}
+  .msg{font-size:12px;margin-top:10px;padding:8px 10px;border-radius:6px;display:none}
+  .msg.ok{background:#e2f3e6;color:#1e7b34;display:block}
+  .msg.err{background:#fbe1de;color:#b3392c;display:block}
+</style>
+</head>
+<body>
+
+<div id="loginOverlay" style="position:fixed;inset:0;background:#12253bee;display:flex;align-items:center;justify-content:center;z-index:9999">
+ <div style="background:#fff;border-radius:10px;padding:28px 32px;width:100%;max-width:340px;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+  <h2 style="margin:0 0 4px;color:#12253b;font-size:18px">Material Selector</h2>
+  <div style="font-size:12px;color:#667;margin-bottom:18px">Đăng nhập (cần quyền admin để vào trang này)</div>
+  <form id="loginForm">
+   <label style="font-size:12px;color:#445;display:block;margin-bottom:4px">Tên đăng nhập</label>
+   <input type="text" id="loginUser" autocomplete="username" required style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ccd3dc;border-radius:6px;margin-bottom:12px;font-size:14px">
+   <label style="font-size:12px;color:#445;display:block;margin-bottom:4px">Mật khẩu</label>
+   <input type="password" id="loginPass" autocomplete="current-password" required style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ccd3dc;border-radius:6px;margin-bottom:14px;font-size:14px">
+   <button type="submit" style="width:100%;padding:10px;background:#2f6fb0;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:600">Đăng nhập</button>
+   <div id="loginError" style="color:#c0392b;font-size:12px;margin-top:10px;display:none"></div>
+  </form>
+ </div>
+</div>
+
+<header>
+ <div class="logo">MATERIAL SELECTOR · Quản lý user</div>
+ <div class="spacer"></div>
+ <a href="index.html">← Về trang tra cứu</a>
+ <span id="whoami" style="font-size:12px;opacity:.9"></span>
+ <button id="logoutBtn" class="btn" style="display:none;background:#ffffff22;color:#fff">Đăng xuất</button>
+</header>
+
+<div class="wrap" id="mainContent" style="display:none">
+
+  <div class="card" id="notAdminCard" style="display:none">
+    <h2>Không có quyền truy cập</h2>
+    <p style="font-size:13px;color:#667">Trang này chỉ dành cho tài khoản role <b>admin</b>. Tài khoản của bạn hiện là <b id="curRole"></b>.</p>
+  </div>
+
+  <div id="adminArea" style="display:none">
+    <div class="card">
+      <h2>Thêm tài khoản mới</h2>
+      <form class="addform" id="addUserForm">
+        <div>
+          <label>Tên đăng nhập</label>
+          <input type="text" id="newUsername" required placeholder="vd: tuan_nguyen">
+        </div>
+        <div>
+          <label>Mật khẩu</label>
+          <input type="text" id="newPassword" required placeholder="mật khẩu ban đầu">
+        </div>
+        <div>
+          <label>Quyền</label>
+          <select id="newRole">
+            <option value="guest">guest (chỉ xem)</option>
+            <option value="admin">admin (xem + sửa DB)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">+ Tạo tài khoản</button>
+      </form>
+      <div class="msg" id="addMsg"></div>
+      <div class="hint">Mật khẩu hiển thị dạng chữ thường để bạn dễ đọc lại và gửi cho đồng nghiệp — sau khi lưu, hệ thống chỉ giữ bản mã hoá (bcrypt), không lưu lại chữ gốc.</div>
+    </div>
+
+    <div class="card">
+      <h2>Danh sách tài khoản</h2>
+      <table>
+        <thead><tr><th>Tên đăng nhập</th><th>Quyền</th><th></th></tr></thead>
+        <tbody id="userRows"></tbody>
+      </table>
+      <div class="msg" id="listMsg"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="auth-client.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
