@@ -357,6 +357,10 @@ async function boot() {
     initMetal();
   } catch (err) {
     console.error(err);
+    // Hiện lỗi ra bảng thay vì để trống (trước đây lỗi chỉ nằm trong Console)
+    $("cnt").textContent = "0";
+    $("chips").innerHTML = "";
+    $("rows").innerHTML = `<tr><td colspan="9" style="color:#b4472b;padding:14px">⚠ Không tải được dữ liệu từ backend: ${err.message}. Mở <a href="${API_BASE}/api/health" target="_blank">${API_BASE}/api/health</a> để kiểm tra file data.</td></tr>`;
   }
 }
 initAuthOnLoad();

@@ -157,7 +157,7 @@ ul.ftree ul .gn{margin-left:22px}
  <aside>
   <div class="loadbox">
    <h3>Data source</h3>
-   <div id="dataInfo" class="hint" style="margin:0 0 8px">Built-in dataset · <b id="nMat">104</b> materials</div>
+   <div id="dataInfo" class="hint" style="margin:0 0 8px">Backend dataset · <b id="nMat">…</b> materials</div>
    <input type="file" id="csvFile" accept=".xlsx,.xls,.csv" style="display:none">
    <button class="btn" id="loadBtn" style="width:100%">⭯ Load / refresh from Excel or CSV</button>
    <div class="hint">Pick your master <b>.xlsx</b> (or .csv) — the table rebuilds from your file. Works with comma or semicolon CSV. UV &amp; compatibility are re-derived from the Family column when not present.</div>
@@ -173,8 +173,8 @@ ul.ftree ul .gn{margin-left:22px}
   <div style="display:flex;gap:8px"><button class="btn" id="printBtn" style="flex:1">Print report</button><button class="btn ghost" id="resetBtn">Reset</button></div>
  </aside>
  <main>
-  <div class="bar"><div class="count"><b id="cnt">2</b> materials match</div>
-   <button class="btn ghost" id="colToggle" style="padding:6px 10px">Column filters</button><div class="chips" id="chips"><span class="chip"><b>Family:</b> Austenitic SS <button data-t="fam">×</button></span></div></div>
+  <div class="bar"><div class="count"><b id="cnt">…</b> materials match</div>
+   <button class="btn ghost" id="colToggle" style="padding:6px 10px">Column filters</button><div class="chips" id="chips"></div></div>
   <table><thead><tr>
    <th>Material / Grade</th><th>Family</th><th>Hardness</th><th>Tensile<br>(MPa)</th><th>Elong.<br>(%)</th><th>Temp (°C)</th><th>UV</th><th>Trade names</th><th>External refs</th>
   </tr><tr class="colf" id="colf" style="display:none"><th><input type="text" data-c="name" placeholder="filter…"></th><th><select data-c="family"><option value="">all</option><option>Aramid</option><option>Austenitic SS</option><option>Butyl (IIR)</option><option>CR (Neoprene)</option><option>Carbon Steel</option><option>Cobalt Alloy</option><option>Cu Alloy</option><option>Duplex SS</option><option>EPDM</option><option>ETFE</option><option>FFKM</option><option>FKM</option><option>GRE</option><option>GRUP</option><option>GRUP (Polyester)</option><option>GRVE</option><option>HNBR</option><option>NBR</option><option>Ni Alloy</option><option>PEEK</option><option>PH SS</option><option>PPS</option><option>PTFE</option><option>PVC / UPVC</option><option>Phenolic</option><option>Polyamide (Nylon)</option><option>Silicone (VMQ/FVMQ)</option><option>TPE (PEBA)</option><option>Ti Alloy</option></select></th><th><input type="text" data-c="hardness" placeholder="filter…"></th><th><input type="text" data-c="tensile" placeholder="filter…"></th><th><input type="text" data-c="elong" placeholder="filter…"></th><th><input type="text" data-c="temp" placeholder="filter…"></th><th><select data-c="uv"><option value="">all</option><option>Excellent</option><option>Fair</option><option>Good</option><option>N/A</option><option>Poor</option></select></th><th><input type="text" data-c="trade" placeholder="filter…"></th><th></th></tr></thead><tbody id="rows"></tbody></table>
