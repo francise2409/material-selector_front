@@ -95,7 +95,8 @@ async function rebuildFacets() {
   $("nMat").textContent = facets.total;
 }
 
-["Excellent", "Good", "Fair", "Poor"].forEach((u) => $("uvBox").insertAdjacentHTML("beforeend", `<label class="chk"><input type="checkbox" value="${u}"><span class="uv ${u}">${u}</span></label>`));
+// Các checkbox UV (Excellent/Good/Fair/Poor) đã có sẵn tĩnh trong index.html —
+// ở đây chỉ gắn sự kiện, KHÔNG chèn thêm nữa (trước đây chèn trùng gây hiển thị x2).
 document.querySelectorAll("#uvBox input").forEach((i) => i.onchange = () => { i.checked ? F.uv.add(i.value) : F.uv.delete(i.value); render(); });
 
 const bind = (id, key, num) => { $(id).oninput = (e) => { const v = e.target.value.trim(); F[key] = v === "" ? (num ? null : "") : (num ? Number(v) : v); render(); }; };
@@ -357,10 +358,6 @@ async function boot() {
     initMetal();
   } catch (err) {
     console.error(err);
-    // Hiện lỗi ra bảng thay vì để trống (trước đây lỗi chỉ nằm trong Console)
-    $("cnt").textContent = "0";
-    $("chips").innerHTML = "";
-    $("rows").innerHTML = `<tr><td colspan="9" style="color:#b4472b;padding:14px">⚠ Không tải được dữ liệu từ backend: ${err.message}. Mở <a href="${API_BASE}/api/health" target="_blank">${API_BASE}/api/health</a> để kiểm tra file data.</td></tr>`;
   }
 }
 initAuthOnLoad();

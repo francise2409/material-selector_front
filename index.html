@@ -38,6 +38,11 @@ input:focus,select:focus{outline:2px solid var(--accent);border-color:var(--acce
 .chip{background:#e7eef7;border:1px solid #cfdcea;border-radius:20px;padding:3px 10px 3px 11px;font-size:12px;display:flex;align-items:center;gap:6px}
 .chip button{background:none;border:none;color:var(--ink2);font-size:14px;line-height:1;padding:0}
 table{border-collapse:collapse;width:100%;background:var(--card);font-size:13px}
+#matTable{table-layout:fixed}
+#matTable td{overflow-wrap:break-word;word-break:break-word}
+#matTable col.c-name{width:13%}#matTable col.c-family{width:8%}#matTable col.c-hardness{width:9%}
+#matTable col.c-tensile{width:7%}#matTable col.c-elong{width:7%}#matTable col.c-temp{width:9%}
+#matTable col.c-uv{width:6%}#matTable col.c-trade{width:23%}#matTable col.c-refs{width:18%}
 thead th{position:sticky;top:0;background:var(--ink);color:#fff;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;padding:9px 8px;text-align:left;font-weight:600}
 thead tr.colf th{position:sticky;top:34px;background:#e9eef4;padding:5px 6px}
 thead tr.colf input,thead tr.colf select{padding:4px 6px;font-size:12px;background:#fff}
@@ -157,7 +162,7 @@ ul.ftree ul .gn{margin-left:22px}
  <aside>
   <div class="loadbox">
    <h3>Data source</h3>
-   <div id="dataInfo" class="hint" style="margin:0 0 8px">Backend dataset · <b id="nMat">…</b> materials</div>
+   <div id="dataInfo" class="hint" style="margin:0 0 8px">Built-in dataset · <b id="nMat">104</b> materials</div>
    <input type="file" id="csvFile" accept=".xlsx,.xls,.csv" style="display:none">
    <button class="btn" id="loadBtn" style="width:100%">⭯ Load / refresh from Excel or CSV</button>
    <div class="hint">Pick your master <b>.xlsx</b> (or .csv) — the table rebuilds from your file. Works with comma or semicolon CSV. UV &amp; compatibility are re-derived from the Family column when not present.</div>
@@ -173,9 +178,9 @@ ul.ftree ul .gn{margin-left:22px}
   <div style="display:flex;gap:8px"><button class="btn" id="printBtn" style="flex:1">Print report</button><button class="btn ghost" id="resetBtn">Reset</button></div>
  </aside>
  <main>
-  <div class="bar"><div class="count"><b id="cnt">…</b> materials match</div>
-   <button class="btn ghost" id="colToggle" style="padding:6px 10px">Column filters</button><div class="chips" id="chips"></div></div>
-  <table><thead><tr>
+  <div class="bar"><div class="count"><b id="cnt">2</b> materials match</div>
+   <button class="btn ghost" id="colToggle" style="padding:6px 10px">Column filters</button><div class="chips" id="chips"><span class="chip"><b>Family:</b> Austenitic SS <button data-t="fam">×</button></span></div></div>
+  <table id="matTable"><colgroup><col class="c-name"><col class="c-family"><col class="c-hardness"><col class="c-tensile"><col class="c-elong"><col class="c-temp"><col class="c-uv"><col class="c-trade"><col class="c-refs"></colgroup><thead><tr>
    <th>Material / Grade</th><th>Family</th><th>Hardness</th><th>Tensile<br>(MPa)</th><th>Elong.<br>(%)</th><th>Temp (°C)</th><th>UV</th><th>Trade names</th><th>External refs</th>
   </tr><tr class="colf" id="colf" style="display:none"><th><input type="text" data-c="name" placeholder="filter…"></th><th><select data-c="family"><option value="">all</option><option>Aramid</option><option>Austenitic SS</option><option>Butyl (IIR)</option><option>CR (Neoprene)</option><option>Carbon Steel</option><option>Cobalt Alloy</option><option>Cu Alloy</option><option>Duplex SS</option><option>EPDM</option><option>ETFE</option><option>FFKM</option><option>FKM</option><option>GRE</option><option>GRUP</option><option>GRUP (Polyester)</option><option>GRVE</option><option>HNBR</option><option>NBR</option><option>Ni Alloy</option><option>PEEK</option><option>PH SS</option><option>PPS</option><option>PTFE</option><option>PVC / UPVC</option><option>Phenolic</option><option>Polyamide (Nylon)</option><option>Silicone (VMQ/FVMQ)</option><option>TPE (PEBA)</option><option>Ti Alloy</option></select></th><th><input type="text" data-c="hardness" placeholder="filter…"></th><th><input type="text" data-c="tensile" placeholder="filter…"></th><th><input type="text" data-c="elong" placeholder="filter…"></th><th><input type="text" data-c="temp" placeholder="filter…"></th><th><select data-c="uv"><option value="">all</option><option>Excellent</option><option>Fair</option><option>Good</option><option>N/A</option><option>Poor</option></select></th><th><input type="text" data-c="trade" placeholder="filter…"></th><th></th></tr></thead><tbody id="rows"></tbody></table>
   <div class="empty" id="empty" style="display:none"></div>
